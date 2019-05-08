@@ -7,6 +7,8 @@ import com.sarziv.ws.Repository.ProjectRepository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,10 +44,10 @@ public class ProjectController {
     Project updateProject(@RequestBody Project newProject, @PathVariable Long id) {
 
         if(!projectRepository.findById(id).isPresent()){
-            throw new ProjectNotFoundException("Id not updated-"+ id);
+            throw new ProjectNotFoundException("Id not Found: "+ id);
         }
 
-        return projectRepository.findById(id)
+        projectRepository.findById(id)
                 .map(project -> {
                     project.setId(newProject.getId());
                     project.setProject_name(newProject.getProject_name());
@@ -53,9 +55,9 @@ public class ProjectController {
                     return projectRepository.save(newProject);
                 })
                 .orElseGet(() -> {
-                    newProject.setId(id);
-                    return projectRepository.save(newProject);
+                   throw new ProjectNotFoundException("Error:");
                 });
+        return projectRepository.save(newProject);
     }
 
 
