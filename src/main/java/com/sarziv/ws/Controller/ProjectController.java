@@ -20,7 +20,6 @@ public class ProjectController {
     @Autowired
     ProjectRepository projectRepository;
 
-
     @GetMapping()
     public List<Project> getAllProjects() {
         return projectRepository.findAll();
@@ -43,8 +42,8 @@ public class ProjectController {
     @PutMapping("/{id}")
     Project updateProject(@RequestBody Project newProject, @PathVariable Long id) {
 
-        if(!projectRepository.findById(id).isPresent()){
-            throw new ProjectNotFoundException("Id not Found: "+ id);
+        if (!projectRepository.findById(id).isPresent()) {
+            throw new ProjectNotFoundException("Id not Found: " + id);
         }
 
         projectRepository.findById(id)
@@ -55,7 +54,7 @@ public class ProjectController {
                     return projectRepository.save(newProject);
                 })
                 .orElseGet(() -> {
-                   throw new ProjectNotFoundException("Error:");
+                    throw new ProjectNotFoundException("Error:");
                 });
         return projectRepository.save(newProject);
     }
